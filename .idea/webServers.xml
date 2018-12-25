@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4182c771-7ae4-47aa-aad9-a24760a5ec5a" name="dev.digitalwand.ru" url="http://a.kondratiev-oop.study.ddemo.ru">
+        <fileTransfer host="dev.digitalwand.ru" port="7023" rootFolder="/srv/sites/study/a.kondratiev-oop/a.kondratiev-oop.study.ddemo.ru/" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="7023" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
