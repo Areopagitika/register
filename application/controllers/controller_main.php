@@ -4,7 +4,7 @@ class Controller_Main extends Controller
 {
     public function __construct()
     {
-        $this->model = new IndexModel();
+        $this->model = new Model();
         $this->view = new View();
     }
 
