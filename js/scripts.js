@@ -1,6 +1,14 @@
 $(document).ready(function() {
+
+    $.validator.addMethod("checkMask", function(value, element) {
+        return /^\+7\d{10}/.test(value);
+    });
+
     $("#regForm").validate({
         rules: {
+            name: {
+                required: true
+            },
             family: {
                 required: true
             },
@@ -10,17 +18,81 @@ $(document).ready(function() {
             },
             phone: {
                 required: true,
-                minlength: 11
+                maxlength: 12,
+                checkMask: true
             },
             address: {
                 required: true
             },
             password: {
-                required: true
+                required: true,
+                minlength: 8,
             },
             confirm_password: {
+                required: true,
+                equalTo: "#regInputPassword"
+            }
+        },
+        messages: {
+            name: 'Поле Имя обязательно для заполнения',
+            family: 'Поле Фамилия обязательно для заполнения',
+            email: {
+                required: 'Поле E-mail не заполнено',
+                email: 'Необходимо ввести e-mail в формате name@domain.com'
+            },
+            phone: {
+                required: 'Поле Телефон обязательно для заполнения',
+                maxlength: 'Номер телефона должен достоят из 12 символов',
+                checkMask: 'Введите телефон в нужном формате'
+            },
+            address: 'Поле Адрес обязательно для заполнения',
+            password: {
+                required: 'Поле Пароль обязательно для заполнения',
+                minlength: 'Пароль должен содержать не менее 8 символов'
+            },
+            confirm_password: {
+                required: 'Поле для подтверждения пароля не заполнено',
+                equalTo: 'Пароль не совпадает'
+            }
+
+        },
+        validClass: 'is-valid',
+        errorClass: 'is-invalid',
+        submitHandler: function(form) {
+            $.ajax({
+                url: 'reg/',
+                method: 'post',
+                data: $(form).serialize(),
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function() {
+                    console.log("ERROR");
+                }
+            });
+        },
+        invalidHandler: function() {
+            console.log("Invalid");
+        }
+    });
+
+
+    $("#authForm").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
                 required: true
             }
+        },
+        messages: {
+            email: {
+                required: 'Поле E-mail не заполнено',
+                email: 'Необходимо ввести e-mail в формате name@domain.com'
+            },
+            password: 'Поле Пароль обязательно для заполнения'
         },
         validClass: 'is-valid',
         errorClass: 'is-invalid',
@@ -30,9 +102,4 @@ $(document).ready(function() {
         debug: true
     });
 
-    $("#regForm").submit(function(e) {
-       e.preventDefault();
-
-
-    });
 });

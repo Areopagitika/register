@@ -9,7 +9,12 @@ class Model
         $this->db = DB::connToDB();
     }
 
-    public function get_data()
+    public function get_users()
     {
+
+    }
+
+    public function reg_user() {
+
     }
 }

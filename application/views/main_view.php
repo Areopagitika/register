@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-sm-6">
             <h3 class="text-center">Регистрация</h3>
-            <form action="" class="reg-form " id="regForm">
+            <form action="" method="POST" class="reg-form " id="regForm">
                 <div class="form-group">
                     <label for="regInputName">Имя</label>
                     <input type="text" name="name" class="form-control" id="regInputName">
                 </div>
                 <div class="form-group">
-                    <label for="regInputSurname">Фамилия</label>
-                    <input type="text" name="family" class="form-control" id="regInputSurname">
+                    <label for="regInputFamily">Фамилия</label>
+                    <input type="text" name="family" class="form-control" id="regInputFamily">
                 </div>
                 <div class="form-group">
                     <label for="regInputEmail">Email</label>
@@ -36,7 +36,7 @@
         </div>
         <div class="col-sm-6">
             <h3 class="text-center">Авторизация</h3>
-            <form action="" class="auth-form" id="authForm">
+            <form action="" method="POST" class="auth-form" id="authForm">
                 <div class="form-group">
                     <label for="authInputEmail">Email</label>
                     <input type="email" class="form-control" id="authInputEmail">
