@@ -1,5 +1,7 @@
 <?php
 
+
+//TODO Почему у тебя действия касаемые одногшо процесса (работа с авторизацией) раскидана по разным контроллерам?
 class Controller_Auth extends Controller
 {
     function action_index()

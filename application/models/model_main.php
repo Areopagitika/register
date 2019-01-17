@@ -1,10 +1,12 @@
 <?php
 
+//TODO Если у тебя модель должна отвечать за пользователей, то почему у тебя модель называется Main?
 class Model_Main extends Model
 {
     public function get_users()
     {
         $data = array();
+        //TODO Прямые запросы в частнгой модели? Ты серьезно?
         $stmt_users = $this->db->query("SELECT * FROM users");
         $items_users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
         foreach ($items_users as $item) {

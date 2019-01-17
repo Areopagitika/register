@@ -15,10 +15,12 @@ class Controller_Reg extends Controller
         //$this->register();
     }
 
+    //TODO Какого хера валидация у тебя в контроллере? Переписывай.
     public function validate_reg()
     {
         $error = array("error" => true);
 
+        //TODO Зачем ты тупо перегоняешь массив в другой массив? Защиту от инъекций хотя бы добавил, для приличия.
         $arrFields = array(
             "name" => $_POST["name"],
             "family" => $_POST["family"],
