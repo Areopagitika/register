@@ -63,11 +63,19 @@ $(document).ready(function() {
                 url: 'reg/',
                 method: 'post',
                 data: $(form).serialize(),
+                dataType: 'json',
                 success: function (response) {
-                    console.log(response);
+                    if(response.error) {
+                        var fields = response.fields;
+                        for (key in fields) {
+                            $(form).find('[name="' + key + '"]').addClass("is-invalid").parent().find('.invalid-feedback').text(fields[key]);
+                            console.log(key + "-" + fields[key] + "<br>");
+                        }
+                        console.log($(form));
+                    }
                 },
-                error: function() {
-                    console.log("ERROR");
+                error: function(response) {
+                    console.log(response);
                 }
             });
         },

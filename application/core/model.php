@@ -17,4 +17,9 @@ class Model
     public function reg_user() {
 
     }
+
+    public function hash_password($password, $salt) {
+        $hash = md5($password . '+' . $salt);
+        return $hash;
+    }
 }
