@@ -5,7 +5,7 @@ $(document).ready(function() {
     });
 
     $("#regForm").validate({
-        rules: {
+        /*rules: {
             name: {
                 required: true
             },
@@ -55,16 +55,17 @@ $(document).ready(function() {
                 equalTo: 'Пароль не совпадает'
             }
 
-        },
+        },*/
         validClass: 'is-valid',
         errorClass: 'is-invalid',
         submitHandler: function(form) {
             $.ajax({
-                url: 'reg/',
+                url: 'users/reg',
                 method: 'post',
                 data: $(form).serialize(),
                 dataType: 'json',
                 success: function (response) {
+                    console.log(response);
                     if(response.error) {
                         var fields = response.fields;
                         for (key in fields) {
