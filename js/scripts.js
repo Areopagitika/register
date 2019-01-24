@@ -70,7 +70,7 @@ $(document).ready(function() {
                         var fields = response.fields;
                         for (key in fields) {
                             $(form).find('[name="' + key + '"]').addClass("is-invalid").parent().find('.invalid-feedback').text(fields[key]);
-                            console.log(key + "-" + fields[key] + "<br>");
+                            console.log(key + "-" + fields[key]);
                         }
                         console.log($(form));
                     }

@@ -17,6 +17,6 @@ class Controller_Users extends Controller
     public function action_reg()
     {
         $user = $_POST;
-        return $this->model->addUser($user);
+        echo $this->model->addUser($user);
     }
 }

@@ -11,3 +11,8 @@ function checkData($value) {
     $output = strip_tags($value);
     return $output;
 }
+
+function checkEmail($value) {
+    $output = filter_var($value, FILTER_VALIDATE_EMAIL);
+    return $output;
+}

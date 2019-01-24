@@ -10,58 +10,88 @@ class Model
         $this->db = DB::instance();
     }
 
-    public function addToTableDB($params)
+    public function addToTableDB($table, $params)
     {
         $keys = array_keys($params);
-        $values = array_values($params);
+        $name_keys = implode(', ', $keys);
+        $placeholder_keys = implode(', :', $keys);
+        $placeholder_keys = ':' . $placeholder_keys;
 
-        $keys = implode(', ', $keys);
-        $values = implode(', ', $values);
+        $sql = 'INSERT INTO ' . $table . ' (' . $name_keys . ') VALUES (' . $placeholder_keys . ')';
 
-        $sql = 'INSERT INTO ' . $this->table . '(' . $keys . ') VALUES (' . $values . ')';
-
-        $query = $this->db->query($sql);
-        if(!$query) {
-            return false;
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(':' . $key, $value);
         }
+        $output = $stmt->execute();
+
+        return $output;
     }
 
-    public function getResult($params)
+    public function getResult($table)
     {
-        $params = implode(', ', $params);
-        $sql = 'SELECT ' . $params . ' FROM ' . $this->table;
+        $sql = 'SELECT * FROM ' . $table;
         $stmt = $this->db->query($sql);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
-    public function validate($params) {
-        $output = array();
+    public function validate($params, $rules_set) {
+        $errors = array();
 
-        foreach ($params as $field => $value) {
-            $is_valid = $this->isValid($field, $value);
+        foreach ($rules_set as $name => $rules) {
+            foreach ($rules as $rule_name => $rule) {
+                switch ($rule_name) {
+                    case 'required':
+                        if($rule) {
+                            if (empty($params[$name])) {
+                                $errors[$name][] = $rule["message"];
+                            }
+                        }
+                        break;
 
-            if($field == 'confirm_password' && !empty($params["password"])) {
-                $values = array(
-                    "password" => $params["password"],
-                    "confirm_password" => $value
-                );
-                $is_valid = $this->isValid($field, $values);
-            }
-            if($is_valid) {
-                $output["fields"][$field] = checkData($value);
-            } else {
-                $output["error"]["status"] = false;
-                $output["error"]["fields"][$field] = $is_valid;
+                    case 'email':
+                        if($rule) {
+                            if(!checkEmail($params[$name])) {
+                                $errors[$name][] = $rule["message"];
+                            }
+                        }
+                        break;
+
+                    case 'regexp':
+                        if (!preg_match($rule['pattern'], $params[$name])) {
+                            $errors[$name][] = $rule["message"];
+                        }
+                        break;
+
+                    case 'equalTo':
+                        if($params[$name] != $params[$rule['field']]) {
+                            $errors[$name][] = $rule["message"];
+                        }
+                        break;
+                }
             }
         }
 
-        if (empty($error["fields"])) {
+        return $errors;
 
-        } else {
-            $error = json_encode($error);
-            return $error;
-        }
+//        foreach ($params as $key => $value) {
+//            $is_valid = $this->isValid($field, $value);
+//
+//            if($is_valid) {
+//                $output["fields"][$field] = checkData($value);
+//            } else {
+//                $output["error"] = false;
+//                $output["error"]["fields"][$field] = $is_valid;
+//            }
+//        }
+//
+//        if (empty($error["fields"])) {
+//
+//        } else {
+//            $error = json_encode($error);
+//            return $error;
+//        }
 
     }
 
@@ -71,6 +101,7 @@ class Model
 
         if (!isset($value) || empty($value)) {
             $output = "Поле обязательно для заполнения";
+            return false;
         }
 
         switch ($name) {
@@ -86,16 +117,6 @@ class Model
                     $output = "Введите телефон в нужном формате";
                 }
                 break;
-
-            case 'password':
-                break;
-
-            case 'confirm_password':
-
-//                if ($value["password"] != $value["confirm_password"]) {
-//                    $output = $value["confirm_password"] . " - " . $value["password"] . "Значения полей Пароль и  Подтверждение пароля должны совпадать";
-//                }
-               break;
         }
 
         return $output;
