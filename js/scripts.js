@@ -5,7 +5,7 @@ $(document).ready(function() {
     });
 
     $("#regForm").validate({
-        /*rules: {
+        rules: {
             name: {
                 required: true
             },
@@ -55,9 +55,12 @@ $(document).ready(function() {
                 equalTo: 'Пароль не совпадает'
             }
 
-        },*/
+        },
         validClass: 'is-valid',
         errorClass: 'is-invalid',
+        errorPlacement: function(error, element) {
+            error.appendTo(element.parent().find(".invalid-feedback"));
+        },
         submitHandler: function(form) {
             $.ajax({
                 url: 'users/reg',
@@ -69,8 +72,15 @@ $(document).ready(function() {
                     if(response.error) {
                         var fields = response.fields;
                         for (key in fields) {
-                            $(form).find('[name="' + key + '"]').addClass("is-invalid").parent().find('.invalid-feedback').text(fields[key]);
+                            var formElement = $(form).find('[name="' + key + '"]'),
+                                message = '';
+                            formElement.addClass("is-invalid");
+                            for (var i = 0; i < fields[key].length; i++) {
+                                message = message + fields[key][i] + "<br>";
+                            }
+                            formElement.parent().find('.invalid-feedback').html(message);
                             console.log(key + "-" + fields[key]);
+                            console.log(fields[key].length);
                         }
                         console.log($(form));
                     }

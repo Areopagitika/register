@@ -8,7 +8,7 @@ function hash_password($password, $salt)
 
 function checkData($value) {
     $output = htmlspecialchars($value);
-    $output = strip_tags($value);
+    $output = strip_tags($output);
     return $output;
 }
 

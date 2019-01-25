@@ -57,8 +57,8 @@ class Users extends Model
                     "message" => 'Поле Пароль не заполнено'
                 ),
                 "regexp" => array(
-                    'pattern' => '/^[+7][0-9]{10}/',
-                    "message" => ''
+                    'pattern' => '/[A-Za-z\d\.!?,:;()\-"]{8,}/',
+                    "message" => 'Пароль должен содержать не менее 8 символов, буквы обоих регистров, знаки препинания и цифры'
                 )
             ),
             "confirm_password" => array(
@@ -73,8 +73,17 @@ class Users extends Model
         );
     }
 
+    public function sanitizeData($params) {
+        $output = array();
+        foreach ($params as $key => $value) {
+            $output[$key] = checkData($value);
+        }
+        return $output;
+    }
+
     public function addUser($params)
     {
+        $params = $this->sanitizeData($params);
         $rules = $this->validate_rules();
         $validate = $this->validate($params, $rules);
         if(!$validate) {

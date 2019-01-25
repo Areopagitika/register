@@ -74,51 +74,5 @@ class Model
         }
 
         return $errors;
-
-//        foreach ($params as $key => $value) {
-//            $is_valid = $this->isValid($field, $value);
-//
-//            if($is_valid) {
-//                $output["fields"][$field] = checkData($value);
-//            } else {
-//                $output["error"] = false;
-//                $output["error"]["fields"][$field] = $is_valid;
-//            }
-//        }
-//
-//        if (empty($error["fields"])) {
-//
-//        } else {
-//            $error = json_encode($error);
-//            return $error;
-//        }
-
-    }
-
-    public function isValid($name, $value)
-    {
-        $output = "";
-
-        if (!isset($value) || empty($value)) {
-            $output = "Поле обязательно для заполнения";
-            return false;
-        }
-
-        switch ($name) {
-            case 'email':
-                $email = filter_var($value, FILTER_VALIDATE_EMAIL);
-                if (!$email) {
-                    $output = "Необходимо ввести e-mail в формате name@domain.com";
-                }
-                break;
-
-            case 'phone':
-                if (preg_match('/^[+7][0-9]{10}/', $value)) {
-                    $output = "Введите телефон в нужном формате";
-                }
-                break;
-        }
-
-        return $output;
     }
 }
