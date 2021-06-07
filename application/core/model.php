@@ -54,6 +54,7 @@ class Model
                         if($rule) {
                             if(!checkEmail($params[$name])) {
                                 $errors[$name][] = $rule["message"];
+                                echo "Trash";
                             }
                         }
                         break;
